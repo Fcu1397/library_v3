@@ -8,9 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* =========================================
-           1. 全域設定 & 變數 (維持原樣)
-           ========================================= */
         :root {
             --primary: #1a1a1a;
             --accent: #d32f2f;
@@ -18,154 +15,92 @@
             --border-color: #000;
             --gray: #888;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--primary); }
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
-
-        /* Header (維持原樣) */
         .header { display: flex; justify-content: space-between; align-items: center; padding: 0 40px; height: 80px; background: #fff; border-bottom: 2px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
         .header__logo { font-family: 'Noto Serif TC', serif; font-size: 24px; font-weight: 700; letter-spacing: 2px; }
         .header__search { flex: 1; max-width: 500px; margin: 0 20px; }
         .header__search input { width: 100%; padding: 10px 15px; border: 1px solid var(--primary); border-radius: 50px; background: #f0f0f0; }
         .header__actions { display: flex; align-items: center; gap: 20px; }
-        .user-profile { font-weight: 500; cursor: pointer; }
-
-        /* Layout */
-        .layout-container {
-            display: grid;
-            grid-template-columns: 280px 1fr; /* 左欄固定，右欄自適應 */
-            gap: 40px;
-            max-width: 1600px;
-            margin: 40px auto;
-            padding: 0 20px;
-            min-height: calc(100vh - 80px);
-        }
-
-        /* =========================================
-           2. NEW Sidebar Styles (針對你的需求修改)
-           ========================================= */
-        .sidebar {
-            background: #fff;
-            border: 1px solid var(--border-color);
-            padding: 25px;
-            height: fit-content;
-            position: sticky;
-            top: 100px;
-        }
-
+        .user-profile a { font-weight: 500; cursor: pointer; transition: 0.3s; }
+        .user-profile a:hover { opacity: 0.7; }
+        .layout-container { display: grid; grid-template-columns: 280px 1fr; gap: 40px; max-width: 1600px; margin: 40px auto; padding: 0 20px; min-height: calc(100vh - 80px); }
+        .sidebar { background: #fff; border: 1px solid var(--border-color); padding: 25px; height: fit-content; position: sticky; top: 100px; }
         .filter-group { margin-bottom: 35px; }
-
-        .filter-title {
-            font-size: 16px;
-            font-weight: 700;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        /* 清除按鈕 (預設隱藏) */
-        .reset-btn {
-            font-size: 12px;
-            color: var(--accent);
-            text-decoration: underline;
-            cursor: pointer;
-            display: none;
-        }
-
-        /* --- 列表型選項 (主類、子類、作者、出版商) --- */
-        .filter-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .filter-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 15px;
-            border: 1px solid #eee; /* 平常是淺灰框 */
-            background: #fff;
-            cursor: pointer;
-            transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            font-size: 14px;
-        }
-
-        .filter-item:hover {
-            border-color: var(--primary);
-            transform: translateX(5px);
-        }
-
-        /* 選中狀態：黑底白字 */
-        .filter-item.active {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
-            transform: translateX(0); /* 選中時不位移 */
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
+        .filter-title { font-size: 16px; font-weight: 700; border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .filter-list { display: flex; flex-direction: column; gap: 8px; }
+        .filter-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border: 1px solid #eee; background: #fff; cursor: pointer; transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); font-size: 14px; }
+        .filter-item:hover { border-color: var(--primary); transform: translateX(5px); }
+        .filter-item.active { background: var(--primary); color: #fff; border-color: var(--primary); transform: translateX(0); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .filter-item.active .filter-count { color: #ccc; background: transparent; }
-
-        /* 隱藏狀態 (當同組有人被選中時) */
-        .filter-item.hidden { display: none; }
-
-        .filter-count {
-            font-size: 12px;
-            color: var(--gray);
-            background: #eee;
-            padding: 2px 6px;
-            border-radius: 10px;
-        }
-
-        /* --- 標籤雲選項 (Tags) --- */
+        .filter-count { font-size: 12px; color: var(--gray); background: #eee; padding: 2px 6px; border-radius: 10px; }
         .tags-wrapper { display: flex; flex-wrap: wrap; gap: 8px; }
-
-        .tag-pill {
-            padding: 6px 15px;
-            font-size: 13px;
-            border: 1px solid var(--primary);
-            border-radius: 50px; /* 橢圓 */
-            background: #fff;
-            cursor: pointer;
-            transition: 0.2s;
-            font-weight: 500;
-        }
-
+        .tag-pill { padding: 6px 15px; font-size: 13px; border: 1px solid var(--primary); border-radius: 50px; background: #fff; cursor: pointer; transition: 0.2s; font-weight: 500; }
         .tag-pill:hover { background: #f0f0f0; }
-
-        /* 標籤選中狀態 */
-        .tag-pill.active {
-            background: var(--primary);
-            color: #fff;
-            box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
-        }
-
-        /* =========================================
-           3. 右側內容 (完全維持原樣)
-           ========================================= */
-        .toolbar {
-            display: flex; justify-content: space-between; align-items: center;
-            background: #fff; padding: 15px 25px; border: 1px solid var(--border-color);
-            margin-bottom: 20px; border-radius: 4px;
-        }
+        .tag-pill.active { background: var(--primary); color: #fff; box-shadow: 2px 2px 0 rgba(0,0,0,0.2); }
+        .toolbar { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 15px 25px; border: 1px solid var(--border-color); margin-bottom: 20px; border-radius: 4px; }
         .toolbar__left { font-weight: 700; font-size: 14px; }
         .toolbar__right { display: flex; gap: 20px; align-items: center; }
-        .sort-select { padding: 5px 10px; border: 1px solid #ddd; border-radius: 4px; }
-        .toggle-switch { display: flex; align-items: center; gap: 10px; font-size: 14px; cursor: pointer; }
-        .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 20px; }
-        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: var(--primary); }
-        input:checked + .slider:before { transform: translateX(20px); }
+
+        .custom-select {
+            position: relative;
+            width: 200px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .select-trigger {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 15px;
+            background: #fff;
+            border: 1px solid var(--primary);
+            cursor: pointer;
+            user-select: none;
+        }
+        .select-trigger:hover {
+            background: #f9f9f9;
+        }
+        .select-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #fff;
+            border: 1px solid var(--primary);
+            border-top: none;
+            z-index: 10;
+            display: none;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        .select-options.open {
+            display: block;
+        }
+        .option {
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .option:hover {
+            background: #f0f0f0;
+        }
+        .option.selected {
+            background: var(--primary);
+            color: #fff;
+        }
 
         .result-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
-        .result-card { background: #fff; border: 1px solid #eee; transition: 0.2s; display: flex; flex-direction: column; cursor: pointer; }
+        .result-card {
+            background: #fff;
+            border: 1px solid #eee;
+            transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            animation: card-fade-in 0.5s ease-out forwards;
+        }
         .result-card:hover { border-color: var(--primary); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .result-card__img { width: 100%; aspect-ratio: 2/3; background: #ddd; position: relative; }
         .result-card__img img { width: 100%; height: 100%; object-fit: cover; }
@@ -173,13 +108,24 @@
         .status-badge.borrowable { color: green; border-color: green; }
         .status-badge.loaned { color: red; border-color: red; }
         .result-card__content { padding: 15px; display: flex; flex-direction: column; flex: 1; }
-        .result-card__series { font-size: 12px; color: var(--accent); margin-bottom: 5px; font-weight: 600; }
         .result-card__title { font-size: 15px; font-weight: 700; margin-bottom: auto; line-height: 1.4; }
         .result-card__info { margin-top: 10px; font-size: 12px; color: #555; }
         .pagination { display: flex; justify-content: center; gap: 10px; margin-top: 40px; }
         .page-btn { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 1px solid #ddd; background: #fff; cursor: pointer; }
         .page-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .no-results { text-align: center; padding: 50px; font-size: 18px; color: var(--gray); }
+        .loading-overlay { display: flex; justify-content: center; align-items: center; height: 200px; font-size: 18px; color: var(--gray); }
 
+        @keyframes card-fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -187,221 +133,274 @@
 <header class="header">
     <a href="index.html" class="header__logo">LIBRARY.SYS</a>
     <div class="header__search">
-        <input type="text" value="日本文學" placeholder="搜尋...">
+        <input type="text" placeholder="搜尋...">
     </div>
     <div class="header__actions">
-        <div class="user-profile"><i class="fa-regular fa-user"></i> 您好，陳小明</div>
+        <!-- Auth content is injected here by auth.js -->
     </div>
 </header>
 
 <div class="layout-container">
-
-    <aside class="sidebar">
-
-        <div class="filter-group" id="group-main">
-            <div class="filter-title">
-                主類別
-                <span class="reset-btn" onclick="resetGroup('group-main')">清除</span>
-            </div>
-            <div class="filter-list">
-                <div class="filter-item" onclick="toggleItem(this, 'group-main')">
-                    <span>文學小說</span> <span class="filter-count">120</span>
-                </div>
-                <div class="filter-item" onclick="toggleItem(this, 'group-main')">
-                    <span>商業理財</span> <span class="filter-count">45</span>
-                </div>
-                <div class="filter-item" onclick="toggleItem(this, 'group-main')">
-                    <span>藝術設計</span> <span class="filter-count">30</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="filter-group" id="group-sub">
-            <div class="filter-title">
-                子類別
-                <span class="reset-btn" onclick="resetGroup('group-sub')">清除</span>
-            </div>
-            <div class="filter-list">
-                <div class="filter-item" onclick="toggleItem(this, 'group-sub')">
-                    <span>現代文學</span> <span class="filter-count">80</span>
-                </div>
-                <div class="filter-item" onclick="toggleItem(this, 'group-sub')">
-                    <span>推理懸疑</span> <span class="filter-count">30</span>
-                </div>
-                <div class="filter-item" onclick="toggleItem(this, 'group-sub')">
-                    <span>科幻奇幻</span> <span class="filter-count">10</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="filter-group" id="group-auth">
-            <div class="filter-title">
-                作者
-                <span class="reset-btn" onclick="resetGroup('group-auth')">清除</span>
-            </div>
-            <div class="filter-list">
-                <div class="filter-item" onclick="toggleItem(this, 'group-auth')">
-                    <span>村上春樹</span>
-                </div>
-                <div class="filter-item" onclick="toggleItem(this, 'group-auth')">
-                    <span>東野圭吾</span>
-                </div>
-                <div class="filter-item" onclick="toggleItem(this, 'group-auth')">
-                    <span>J.K. Rowling</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="filter-group" id="group-pub">
-            <div class="filter-title">
-                出版商
-                <span class="reset-btn" onclick="resetGroup('group-pub')">清除</span>
-            </div>
-            <div class="filter-list">
-                <div class="filter-item" onclick="toggleItem(this, 'group-pub')">
-                    <span>時報出版</span>
-                </div>
-                <div class="filter-item" onclick="toggleItem(this, 'group-pub')">
-                    <span>皇冠文化</span>
-                </div>
-                <div class="filter-item" onclick="toggleItem(this, 'group-pub')">
-                    <span>天下文化</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="filter-group">
-            <div class="filter-title">標籤</div>
-            <div class="tags-wrapper">
-                <div class="tag-pill" onclick="this.classList.toggle('active')">諾貝爾獎</div>
-                <div class="tag-pill" onclick="this.classList.toggle('active')">改編電影</div>
-                <div class="tag-pill" onclick="this.classList.toggle('active')">心理成長</div>
-                <div class="tag-pill" onclick="this.classList.toggle('active')">Netflix</div>
-                <div class="tag-pill" onclick="this.classList.toggle('active')">2025暢銷</div>
-            </div>
-        </div>
+    <aside class="sidebar" id="sidebar">
+        <div class="loading-overlay"><i class="fa-solid fa-spinner fa-spin"></i></div>
     </aside>
 
     <main class="results-area">
-
         <div class="toolbar">
-            <div class="toolbar__left">
-                顯示 1-12 筆，共 120 筆結果
-            </div>
+            <div class="toolbar__left" id="toolbar-info">載入中...</div>
             <div class="toolbar__right">
-                <label class="toggle-switch">
-                    <div class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
+                <div class="custom-select" id="sort-select">
+                    <div class="select-trigger">
+                        <span class="selected-value">相關度排序</span>
+                        <i class="fa-solid fa-chevron-down"></i>
                     </div>
-                    僅顯示系列作
-                </label>
-                <select class="sort-select">
-                    <option>相關度排序</option>
-                    <option>出版日期 (新->舊)</option>
-                    <option>借閱次數 (高->低)</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="result-grid">
-            <div class="result-card">
-                <div class="result-card__img">
-                    <img src="https://placehold.co/200x300/eee/333?text=Cover" alt="">
-                    <div class="status-badge borrowable">可借閱</div>
-                </div>
-                <div class="result-card__content">
-                    <div class="result-card__series">系列：挪威的森林 [1]</div>
-                    <h3 class="result-card__title">挪威的森林 (上)</h3>
-                    <div class="result-card__info">
-                        <div>作者：村上春樹</div>
-                        <div>出版：時報出版</div>
+                    <div class="select-options">
+                        <div class="option selected" data-value="relevance">相關度排序</div>
+                        <div class="option" data-value="newest">出版日期 (新->舊)</div>
+                        <div class="option" data-value="popular">借閱次數 (高->低)</div>
                     </div>
                 </div>
             </div>
-
-            <div class="result-card">
-                <div class="result-card__img">
-                    <img src="https://placehold.co/200x300/ddd/333?text=Cover" alt="">
-                    <div class="status-badge loaned">借出中</div>
-                </div>
-                <div class="result-card__content">
-                    <div class="result-card__series">系列：挪威的森林 [2]</div>
-                    <h3 class="result-card__title">挪威的森林 (下)</h3>
-                    <div class="result-card__info">
-                        <div>作者：村上春樹</div>
-                        <div>出版：時報出版</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="result-card">
-                <div class="result-card__img"><img src="https://placehold.co/200x300/ccc/333?text=Book" alt=""><div class="status-badge borrowable">可借閱</div></div>
-                <div class="result-card__content"><div class="result-card__series"></div><h3 class="result-card__title">1Q84 BOOK 1</h3><div class="result-card__info"><div>作者：村上春樹</div><div>出版：時報出版</div></div></div>
-            </div>
-            <div class="result-card">
-                <div class="result-card__img"><img src="https://placehold.co/200x300/bbb/333?text=Book" alt=""><div class="status-badge borrowable">可借閱</div></div>
-                <div class="result-card__content"><div class="result-card__series"></div><h3 class="result-card__title">刺殺騎士團長</h3><div class="result-card__info"><div>作者：村上春樹</div><div>出版：時報出版</div></div></div>
-            </div>
         </div>
-
-        <div class="pagination">
-            <div class="page-btn"><i class="fa-solid fa-chevron-left"></i></div>
-            <div class="page-btn active">1</div>
-            <div class="page-btn">2</div>
-            <div class="page-btn">3</div>
-            <div class="page-btn">...</div>
-            <div class="page-btn"><i class="fa-solid fa-chevron-right"></i></div>
+        <div class="result-grid" id="result-grid">
+            <div class="loading-overlay" style="grid-column: 1/-1;"><i class="fa-solid fa-spinner fa-spin"></i> 正在搜尋書籍...</div>
         </div>
-
+        <div class="pagination" id="pagination">
+            <!-- Pagination will be dynamically inserted here -->
+        </div>
     </main>
 </div>
 
+<script src="js/db.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
 <script>
-    // 適用於：主類別、子類別、作者、出版商
-    function toggleItem(element, groupId) {
-        const group = document.getElementById(groupId);
-        const items = group.querySelectorAll('.filter-item');
-        const resetBtn = group.querySelector('.reset-btn');
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentFilters = {
+        query: urlParams.get('query') || '',
+        categoryMain: urlParams.get('categoryMain') || '',
+        categorySub: urlParams.get('categorySub') || '',
+        author: urlParams.get('author') || '',
+        publisher: urlParams.get('publisher') || '',
+        tag: urlParams.get('tag') || '',
+        sort: 'relevance'
+    };
 
-        // 判斷當前是否已經被選中
-        const isAlreadyActive = element.classList.contains('active');
+    const searchInput = document.querySelector('.header__search input');
+    searchInput.value = currentFilters.query;
 
-        // 1. 重置所有項目狀態 (全部顯示、移除選中)
-        items.forEach(item => {
-            item.classList.remove('active');
-            item.classList.remove('hidden');
-            item.style.display = 'flex'; // 恢復 flex 排版
-        });
-        resetBtn.style.display = 'none';
+    let metadata = null;
+    let allBooksForCounts = null;
 
-        // 2. 如果原本沒被選中，則進入「選中並隱藏其他」的狀態
-        if (!isAlreadyActive) {
-            element.classList.add('active');
-            resetBtn.style.display = 'inline-block'; // 顯示清除鈕
+    const loadPage = async () => {
+        try {
+            const [booksResult, metadataResult] = await Promise.all([
+                LibraryAPI.getBooks(currentFilters),
+                LibraryAPI.getMetadata()
+            ]);
 
-            // 隱藏其他未選中的
-            items.forEach(item => {
-                if (!item.classList.contains('active')) {
-                    item.style.display = 'none';
-                }
-            });
+            if (!allBooksForCounts) {
+                allBooksForCounts = await LibraryAPI.getBooks({});
+            }
+
+            metadata = metadataResult;
+            renderSidebar(allBooksForCounts, booksResult);
+            renderResults(booksResult);
+        } catch (error) {
+            console.error(error);
+            document.getElementById('result-grid').innerHTML = '<p class="no-results">載入失敗，請稍後再試。</p>';
         }
-        // 如果原本已經是 active，上面的第1步已經把它重置為未選中且全顯示了，所以不用做額外動作
-    }
+    };
 
-    // 清除按鈕專用邏輯
-    function resetGroup(groupId) {
-        const group = document.getElementById(groupId);
-        const items = group.querySelectorAll('.filter-item');
-        const resetBtn = group.querySelector('.reset-btn');
+    const renderSidebar = (allBooks, filteredBooks) => {
+        const sidebar = document.getElementById('sidebar');
 
-        items.forEach(item => {
-            item.classList.remove('active');
-            item.style.display = 'flex';
+        const createFilterGroup = (title, key, items) => {
+            const activeFilter = currentFilters[key];
+
+            var itemsHTML = items.map(function(item) {
+                const isSelected = activeFilter === item;
+                const count = filteredBooks.filter(b => b[key] === item).length;
+
+                if (count > 0 || isSelected) {
+                    return '<div class="filter-item ' + (isSelected ? 'active' : '') + '" data-filter-key="' + key + '" data-filter-value="' + item + '">' +
+                               '<span>' + item + '</span>' +
+                               '<span class="filter-count">' + count + '</span>' +
+                           '</div>';
+                }
+                return '';
+            }).join('');
+
+            var resetHTML = activeFilter ? '<a href="#" class="reset-btn" data-filter-key="' + key + '">清除</a>' : '';
+
+            return '<div class="filter-group">' +
+                       '<div class="filter-title">' + title + '</div>' +
+                       '<div class="filter-list">' + itemsHTML + resetHTML + '</div>' +
+                   '</div>';
+        };
+
+        // New function for Tags
+        const createTagGroup = (title, items) => {
+            const activeTag = currentFilters.tag;
+
+            var tagsHTML = items.map(function(tag) {
+                const isSelected = activeTag === tag;
+                // Check if any book in filtered results has this tag
+                const count = filteredBooks.filter(b => b.tags && b.tags.includes(tag)).length;
+
+                if (count > 0 || isSelected) {
+                    return '<div class="tag-pill ' + (isSelected ? 'active' : '') + '" data-filter-key="tag" data-filter-value="' + tag + '">' +
+                               tag +
+                           '</div>';
+                }
+                return '';
+            }).join('');
+
+            return '<div class="filter-group">' +
+                       '<div class="filter-title">' + title + '</div>' +
+                       '<div class="tags-wrapper">' + tagsHTML + '</div>' +
+                   '</div>';
+        };
+
+        const mainCategories = [...new Set(allBooks.map(b => b.categoryMain))];
+        const subCategories = [...new Set(allBooks.map(b => b.categorySub))];
+        const authors = metadata ? metadata.authors : [...new Set(allBooks.map(b => b.author))];
+        const publishers = metadata ? metadata.publishers : [...new Set(allBooks.map(b => b.publisher))];
+
+        // Extract all unique tags
+        const allTags = [...new Set(allBooks.flatMap(b => b.tags || []))];
+
+        sidebar.innerHTML =
+            createFilterGroup('主類別', 'categoryMain', mainCategories) +
+            createFilterGroup('子類別', 'categorySub', subCategories) +
+            createFilterGroup('作者', 'author', authors) +
+            createFilterGroup('出版商', 'publisher', publishers) +
+            createTagGroup('TRENDING TAGS', allTags);
+    };
+
+    const renderResults = (books) => {
+        const grid = document.getElementById('result-grid');
+        const toolbarInfo = document.getElementById('toolbar-info');
+
+        if (currentFilters.sort === 'newest') {
+            books.sort((a, b) => b.id.localeCompare(a.id));
+        } else if (currentFilters.sort === 'popular') {
+            books.sort((a, b) => b.rating - a.rating);
+        }
+
+        if (books.length === 0) {
+            grid.innerHTML = '<p class="no-results">找不到符合條件的書籍。</p>';
+            toolbarInfo.textContent = '共 0 筆結果';
+            return;
+        }
+
+        toolbarInfo.textContent = '顯示 1-' + books.length + ' 筆，共 ' + books.length + ' 筆結果';
+        grid.innerHTML = books.map(function(book) {
+            const isAvailable = book.holdings.some(h => h.status === 'available');
+            const statusClass = isAvailable ? 'borrowable' : 'loaned';
+            const statusText = isAvailable ? '可借閱' : '借出中';
+            return '<div class="result-card" data-book-id="' + book.id + '">' +
+                       '<div class="result-card__img">' +
+                           '<img src="' + book.cover + '" alt="' + book.title + '">' +
+                           '<div class="status-badge ' + statusClass + '">' + statusText + '</div>' +
+                       '</div>' +
+                       '<div class="result-card__content">' +
+                           '<h3 class="result-card__title">' + book.title + '</h3>' +
+                           '<div class="result-card__info">' +
+                               '<div>作者：' + book.author + '</div>' +
+                               '<div>出版：' + book.publisher + '</div>' +
+                           '</div>' +
+                       '</div>' +
+                   '</div>';
+        }).join('');
+    };
+
+    const addEventListeners = () => {
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                currentFilters.query = searchInput.value.trim();
+                updateURL();
+            }
         });
-        resetBtn.style.display = 'none';
-    }
+
+        document.getElementById('sidebar').addEventListener('click', (e) => {
+            const filterItem = e.target.closest('.filter-item');
+            const tagPill = e.target.closest('.tag-pill');
+            const resetBtn = e.target.closest('.reset-btn');
+
+            if (filterItem) {
+                const { filterKey, filterValue } = filterItem.dataset;
+                currentFilters[filterKey] = currentFilters[filterKey] === filterValue ? '' : filterValue;
+                updateURL();
+            }
+            if (tagPill) {
+                const { filterKey, filterValue } = tagPill.dataset;
+                currentFilters[filterKey] = currentFilters[filterKey] === filterValue ? '' : filterValue;
+                updateURL();
+            }
+            if (resetBtn) {
+                e.preventDefault();
+                const { filterKey } = resetBtn.dataset;
+                currentFilters[filterKey] = '';
+                updateURL();
+            }
+        });
+
+        document.getElementById('result-grid').addEventListener('click', (e) => {
+            const card = e.target.closest('.result-card');
+            if (card && card.dataset.bookId) {
+                window.location.href = 'oneBook.html?id=' + card.dataset.bookId;
+            }
+        });
+
+        const customSelect = document.getElementById('sort-select');
+        const trigger = customSelect.querySelector('.select-trigger');
+        const optionsContainer = customSelect.querySelector('.select-options');
+        const options = customSelect.querySelectorAll('.option');
+        const selectedValueSpan = customSelect.querySelector('.selected-value');
+
+        trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            optionsContainer.classList.toggle('open');
+        });
+
+        options.forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+                options.forEach(o => o.classList.remove('selected'));
+                option.classList.add('selected');
+                selectedValueSpan.textContent = option.textContent;
+                optionsContainer.classList.remove('open');
+
+                currentFilters.sort = option.dataset.value;
+                document.getElementById('result-grid').innerHTML = '<div class="loading-overlay" style="grid-column: 1/-1;"><i class="fa-solid fa-spinner fa-spin"></i> 正在排序...</div>';
+                loadPage();
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!customSelect.contains(e.target)) {
+                optionsContainer.classList.remove('open');
+            }
+        });
+    };
+
+    const updateURL = () => {
+        const params = new URLSearchParams();
+        Object.entries(currentFilters).forEach(([key, value]) => {
+            if (value && key !== 'sort') params.set(key, value);
+        });
+        window.history.pushState({}, '', '?' + params.toString());
+
+        document.getElementById('result-grid').innerHTML = '<div class="loading-overlay" style="grid-column: 1/-1;"><i class="fa-solid fa-spinner fa-spin"></i> 正在搜尋書籍...</div>';
+        loadPage();
+    };
+
+    // Initial load
+    loadPage();
+    addEventListeners();
+});
 </script>
 
 </body>

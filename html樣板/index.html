@@ -51,8 +51,8 @@
         }
 
         .header__actions { display: flex; align-items: center; gap: 20px; }
-        .user-profile { font-weight: 500; cursor: pointer; transition: 0.3s; }
-        .user-profile:hover { opacity: 0.7; }
+        .user-profile a { font-weight: 500; cursor: pointer; transition: 0.3s; }
+        .user-profile a:hover { opacity: 0.7; }
 
         .notificationbox { position: relative; cursor: pointer; font-size: 20px; }
         .notificationbox .dot {
@@ -205,18 +205,12 @@
 <body>
 
 <header class="header">
-    <a href="#" class="header__logo">LIBRARY.SYS</a>
+    <a href="index.html" class="header__logo">LIBRARY.SYS</a>
     <div class="header__search">
         <input type="text" placeholder="搜尋書名、作者、ISBN...">
     </div>
     <div class="header__actions">
-        <div class="user-profile">
-            <i class="fa-regular fa-user"></i> 您好，陳小明
-        </div>
-        <div class="notificationbox">
-            <i class="fa-regular fa-bell"></i>
-            <span class="dot"></span>
-        </div>
+        <!-- Auth content is injected here by auth.js -->
     </div>
 </header>
 
@@ -225,19 +219,11 @@
 </section>
 
 <nav class="cat-nav">
-    <ul class="main-cats">
-        <li class="main-cats__item active">文學小說</li>
-        <li class="main-cats__item">商業理財</li>
-        <li class="main-cats__item">藝術設計</li>
-        <li class="main-cats__item">人文社科</li>
-        <li class="main-cats__item">自然科普</li>
+    <ul class="main-cats" id="main-cats">
+        <!-- Main categories will be dynamically inserted here -->
     </ul>
-    <div class="sub-cats">
-        <a href="search.html" class="sub-cats__item">現代文學</a>
-        <a href="search.html" class="sub-cats__item">推理懸疑</a>
-        <a href="search.html" class="sub-cats__item">科幻奇幻</a>
-        <a href="search.html" class="sub-cats__item">歷史小說</a>
-        <a href="search.html" class="sub-cats__item">詩集</a>
+    <div class="sub-cats" id="sub-cats">
+        <!-- Sub categories will be dynamically inserted here -->
     </div>
 </nav>
 
@@ -246,34 +232,8 @@
         <h2 class="section-title">NEW ARRIVALS <span style="font-size:14px; color:var(--gray); font-weight:400; font-family:'Noto Sans TC'">最新上架</span></h2>
         <span class="section-more">查看更多</span>
     </div>
-    <div class="book-grid">
-        <div class="book-card" onclick="window.location.href='search.html'">
-            <div class="book-card__img-wrapper">
-                <img src="https://placehold.co/300x400/eee/333?text=Book+Cover" alt="Book">
-            </div>
-            <div class="book-card__info">
-                <span class="book-card__badge">NEW</span>
-                <h3 class="book-card__title">挪威的森林 (30週年紀念版)</h3>
-                <p class="book-card__meta">作者：村上春樹</p>
-                <p class="book-card__meta">出版：時報出版</p>
-            </div>
-        </div>
-        <div class="book-card">
-            <div class="book-card__img-wrapper"><img src="https://placehold.co/300x400/e0e0e0/333?text=Book" alt=""></div>
-            <div class="book-card__info"><h3 class="book-card__title">被討厭的勇氣</h3><p class="book-card__meta">作者：岸見一郎</p><p class="book-card__meta">出版：究竟出版</p></div>
-        </div>
-        <div class="book-card">
-            <div class="book-card__img-wrapper"><img src="https://placehold.co/300x400/ddd/333?text=Book" alt=""></div>
-            <div class="book-card__info"><h3 class="book-card__title">原子習慣</h3><p class="book-card__meta">作者：James Clear</p><p class="book-card__meta">出版：方智出版</p></div>
-        </div>
-        <div class="book-card">
-            <div class="book-card__img-wrapper"><img src="https://placehold.co/300x400/ccc/333?text=Book" alt=""></div>
-            <div class="book-card__info"><h3 class="book-card__title">底層邏輯</h3><p class="book-card__meta">作者：劉潤</p><p class="book-card__meta">出版：時報出版</p></div>
-        </div>
-        <div class="book-card">
-            <div class="book-card__img-wrapper"><img src="https://placehold.co/300x400/bbb/333?text=Book" alt=""></div>
-            <div class="book-card__info"><h3 class="book-card__title">蛤蟆先生去看心理師</h3><p class="book-card__meta">作者：Robert de Board</p><p class="book-card__meta">出版：三采文化</p></div>
-        </div>
+    <div class="book-grid" id="new-arrivals-grid">
+        <!-- Books will be dynamically inserted here -->
     </div>
 </section>
 
@@ -282,15 +242,8 @@
         <h2 class="section-title">POPULAR <span style="font-size:14px; color:var(--gray); font-weight:400; font-family:'Noto Sans TC'">熱門借閱</span></h2>
         <span class="section-more">查看排行榜</span>
     </div>
-    <div class="book-grid">
-        <div class="book-card">
-            <div class="book-card__img-wrapper"><img src="https://placehold.co/300x400/333/fff?text=Hot" alt=""></div>
-            <div class="book-card__info"><h3 class="book-card__title">三體：全集</h3><p class="book-card__meta">作者：劉慈欣</p><p class="book-card__meta">出版：貓頭鷹</p></div>
-        </div>
-        <div class="book-card"><div class="book-card__img-wrapper"><img src="https://placehold.co/300x400/444/fff?text=Hot" alt=""></div><div class="book-card__info"><h3 class="book-card__title">哈利波特：神秘的魔法石</h3><p class="book-card__meta">作者：J.K. Rowling</p><p class="book-card__meta">出版：皇冠</p></div></div>
-        <div class="book-card"><div class="book-card__img-wrapper"><img src="https://placehold.co/300x400/555/fff?text=Hot" alt=""></div><div class="book-card__info"><h3 class="book-card__title">解憂雜貨店</h3><p class="book-card__meta">作者：東野圭吾</p><p class="book-card__meta">出版：皇冠</p></div></div>
-        <div class="book-card"><div class="book-card__img-wrapper"><img src="https://placehold.co/300x400/666/fff?text=Hot" alt=""></div><div class="book-card__info"><h3 class="book-card__title">人類大歷史</h3><p class="book-card__meta">作者：Yuval Noah Harari</p><p class="book-card__meta">出版：天下文化</p></div></div>
-        <div class="book-card"><div class="book-card__img-wrapper"><img src="https://placehold.co/300x400/777/fff?text=Hot" alt=""></div><div class="book-card__info"><h3 class="book-card__title">快思慢想</h3><p class="book-card__meta">作者：Daniel Kahneman</p><p class="book-card__meta">出版：天下文化</p></div></div>
+    <div class="book-grid" id="popular-grid">
+        <!-- Books will be dynamically inserted here -->
     </div>
 </section>
 
@@ -313,6 +266,118 @@
 <footer>
     <p>&copy; 2025 Library System Prototype. Design for Vue.js 3</p>
 </footer>
+
+<script src="js/db.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const createBookCard = (book) => {
+        var badge = book.id === 'B001' ? '<span class="book-card__badge">NEW</span>' : '';
+        return '<div class="book-card" data-book-id="' + book.id + '">' +
+                '<div class="book-card__img-wrapper">' +
+                    '<img src="' + book.cover + '" alt="' + book.title + '">' +
+                '</div>' +
+                '<div class="book-card__info">' +
+                    badge +
+                    '<h3 class="book-card__title">' + book.title + '</h3>' +
+                    '<p class="book-card__meta">作者：' + book.author + '</p>' +
+                    '<p class="book-card__meta">出版：' + book.publisher + '</p>' +
+                '</div>' +
+            '</div>';
+    };
+
+    const renderBookSections = (category) => {
+        const allBooks = window.mockDB.books;
+        const filteredBooks = category ? allBooks.filter(b => b.categoryMain === category) : allBooks;
+
+        const newArrivals = [...filteredBooks].sort((a, b) => b.id.localeCompare(a.id)).slice(0, 5);
+        const popular = [...filteredBooks].sort((a, b) => b.rating - a.rating).slice(0, 5);
+
+        const newArrivalsContainer = document.getElementById('new-arrivals-grid');
+        const popularContainer = document.getElementById('popular-grid');
+
+        newArrivalsContainer.innerHTML = newArrivals.length > 0
+            ? newArrivals.map(createBookCard).join('')
+            : '<p>此分類暫無新書</p>';
+        popularContainer.innerHTML = popular.length > 0
+            ? popular.map(createBookCard).join('')
+            : '<p>此分類暫無熱門書籍</p>';
+    };
+
+    // --- CATEGORY NAVIGATION ---
+    const mainCatsContainer = document.getElementById('main-cats');
+    const subCatsContainer = document.getElementById('sub-cats');
+    const categories = window.mockDB.categories;
+
+    const renderSubCats = (mainCat) => {
+        const subCats = categories[mainCat] || [];
+        subCatsContainer.innerHTML = subCats.map(subCat =>
+            '<a href="#" class="sub-cats__item" data-category="' + subCat + '">' + subCat + '</a>'
+        ).join('');
+    };
+
+    const renderMainCats = () => {
+        mainCatsContainer.innerHTML = Object.keys(categories).map((cat, index) =>
+            '<li class="main-cats__item ' + (index === 0 ? 'active' : '') + '" data-category="' + cat + '">' + cat + '</li>'
+        ).join('');
+
+        const firstMainCat = Object.keys(categories)[0];
+        if (firstMainCat) {
+            renderSubCats(firstMainCat);
+            renderBookSections(firstMainCat); // Initial render for books
+        }
+    };
+
+    mainCatsContainer.addEventListener('click', (e) => {
+        const target = e.target.closest('.main-cats__item');
+        if (!target) return;
+
+        mainCatsContainer.querySelectorAll('.main-cats__item').forEach(item => item.classList.remove('active'));
+        target.classList.add('active');
+
+        const mainCategory = target.dataset.category;
+        renderSubCats(mainCategory);
+        renderBookSections(mainCategory); // Re-render book sections on click
+    });
+
+    renderMainCats();
+
+    // --- HANDLE NAVIGATION ---
+    const searchInput = document.querySelector('.header__search input');
+    searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && searchInput.value.trim()) {
+            window.location.href = 'search.html?query=' + encodeURIComponent(searchInput.value.trim());
+        }
+    });
+
+    document.querySelectorAll('.book-grid').forEach(grid => {
+        grid.addEventListener('click', (e) => {
+            const card = e.target.closest('.book-card');
+            if (card && card.dataset.bookId) {
+                window.location.href = 'oneBook.html?id=' + card.dataset.bookId;
+            }
+        });
+    });
+
+    subCatsContainer.addEventListener('click', (e) => {
+        const subCat = e.target.closest('.sub-cats__item');
+        if (subCat) {
+            e.preventDefault();
+            const category = subCat.dataset.category;
+            window.location.href = 'search.html?categorySub=' + encodeURIComponent(category);
+        }
+    });
+
+    document.querySelector('.tags-wrapper').addEventListener('click', (e) => {
+        const tagPill = e.target.closest('.tag-pill');
+        if (tagPill) {
+            const tag = tagPill.textContent.replace('#', '').trim();
+            window.location.href = 'search.html?tag=' + encodeURIComponent(tag);
+        }
+    });
+});
+</script>
 
 </body>
 </html>
