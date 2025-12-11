@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入 - Library System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --accent: #d32f2f;
+            --bg: #f9f9f9;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--primary); display: flex; justify-content: center; align-items: center; height: 100vh; }
+
+        .login-card {
+            background: #fff;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #000;
+            box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .login-logo {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        .login-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+        .form-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+        }
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 10px;
+        }
+        .btn-login:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        .btn-login:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .error-msg {
+            color: var(--accent);
+            font-size: 13px;
+            margin-top: 15px;
+            display: none;
+        }
+        .demo-hint {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #888;
+            background: #eee;
+            padding: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <div class="login-logo">LIBRARY.SYS</div>
+    <div class="login-subtitle">請登入您的帳號</div>
+
+    <form id="login-form">
+        <div class="form-group">
+            <label class="form-label">帳號</label>
+            <input type="text" class="form-input" id="username" placeholder="請輸入帳號" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">密碼</label>
+            <input type="password" class="form-input" id="password" placeholder="請輸入密碼" required>
+        </div>
+        <button type="submit" class="btn-login" id="btn-login">登入</button>
+        <div class="error-msg" id="error-msg">帳號或密碼錯誤</div>
+    </form>
+
+    <div class="demo-hint">
+        <b>Demo Account:</b><br>
+        帳號: ming_chen<br>
+        密碼: 1234
+    </div>
+</div>
+
+<script src="js/db.js"></script>
+<script src="js/api.js"></script>
+<script>
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const errorMsg = document.getElementById('error-msg');
+
+        try {
+            btn.disabled = true;
+            btn.textContent = '登入中...';
+            errorMsg.style.display = 'none';
+
+            await LibraryAPI.login(username, password);
+
+            // Redirect to home page or previous page
+            window.location.href = 'index.html';
+        } catch (error) {
+            errorMsg.textContent = error.message;
+            errorMsg.style.display = 'block';
+            btn.disabled = false;
+            btn.textContent = '登入';
+        }
+    });
+</script>
+
+</body>
+</html>
